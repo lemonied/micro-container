@@ -40,6 +40,12 @@ export async function loadComponent(scope: string, module: string) {
   return factory();
 }
 
+export function loadModule(scope: string, module: string) {
+  return loadComponent(scope, module).then(res => {
+    return Promise.resolve(res.default);
+  });
+}
+
 interface AsyncErrorProps {
   scope: string;
   module: string;
