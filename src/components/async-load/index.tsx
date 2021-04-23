@@ -1,5 +1,5 @@
 import React, { Suspense, FC, lazy, useMemo } from 'react';
-import { queryParse } from '../../helper/utils';
+import { queryParse } from '@/helper/utils';
 import qs from 'querystring';
 
 const cacheModules = new Map<string, Promise<void>>();
@@ -11,7 +11,7 @@ export function loadScript(url: string): Promise<void> {
   const ret = new Promise<void>(((resolve, reject) => {
     const element = document.createElement('script');
     const split = url.split('?');
-    const query = Object.assign({}, queryParse(split[1]), { _: Date.now() });
+    const query = Object.assign({}, queryParse(split[1]), { _: progress.env.TIMESTAMP });
     element.src = `${split[0]}?${qs.stringify(query)}`;
     element.type = 'text/javascript';
     element.async = true;

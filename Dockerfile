@@ -1,8 +1,7 @@
 FROM node:14.16.1-alpine
+ENV PORT=3000
 COPY . /app
 WORKDIR /app
-RUN npm install
-RUN npm run clean
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "run", "serve"]
+RUN npm install --production
+EXPOSE $PORT
+CMD ["npm", "run", "serve", "-p", "$PORT"]
