@@ -80,7 +80,7 @@ export const AsyncComponent: FC<AsyncComponentProps> = (props) => {
         return Promise.resolve({ default: Error });
       });
     });
-  }, []);
+  }, [remote, scope, module]);
 
   return (
     <Suspense fallback={'loading...'}>
