@@ -1,23 +1,15 @@
 import React  from 'react';
-import { AsyncComponent } from './components/async-load';
-import { MdWrapper } from '@/components/md-wrapper';
+import { MdWrapper } from '@culling/core/lib/components';
 import { Route, Switch, useLocation } from 'react-router-dom';
-
-const routes = require('./.temp/temporary.js');
+import { routes } from '@culling/core';
 
 const App = () => {
   const location = useLocation();
   return (
     <>
-      <div>Hello World</div>
-      <AsyncComponent
-        remote={'//localhost:3002/remoteEntry.js'}
-        scope={'app1'}
-        module={'./App'}
-      />
       <Switch location={location}>
         {
-          routes.map((Item: any) => {
+          routes.map((Item) => {
             return (
               <Route
                 exact={Item.exact}
@@ -25,9 +17,7 @@ const App = () => {
                 key={Item.path}
                 render={props => {
                   return (
-                    <MdWrapper>
-                      <Item.Component />
-                    </MdWrapper>
+                    <MdWrapper data={Item.data} />
                   );
                 }}
               />
