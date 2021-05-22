@@ -1,7 +1,8 @@
-FROM node:14.16.1-alpine
-ENV PORT=3000
+FROM node:14.16.1 as builder
 COPY . /app
-WORKDIR /app
-RUN npm install serve@11.3.2
-EXPOSE $PORT
-CMD ["npm", "run", "serve", "-p", "$PORT"]
+RUN cd /app \
+    && npm install \
+    && npm run build
+FROM nginx:1.19.10
+COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist /usr/share/nginx/html
