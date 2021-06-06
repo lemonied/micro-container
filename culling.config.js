@@ -1,4 +1,6 @@
 const { resolve } = require('path');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 module.exports = {
   markdown: resolve(__dirname, './src/content'),
   alias: {},
@@ -14,4 +16,12 @@ module.exports = {
   environments: {
     PUBLIC_URL: '/app/',
   },
+  proxy: createProxyMiddleware([
+    '/api',
+    '/vue',
+  ], {
+    target: 'http://127.0.0.1',
+    ws: true,
+    changeOrigin: true,
+  }),
 };
