@@ -1,7 +1,6 @@
 import React  from 'react';
-import { MdWrapper } from '@culling/core/lib/components';
 import { Route, Switch, useLocation } from 'react-router-dom';
-import { routes } from '@culling/core';
+import { routes, MdWrapper } from '@culling/core';
 
 const App = () => {
   const location = useLocation();
@@ -17,7 +16,7 @@ const App = () => {
                 key={Item.path}
                 render={props => {
                   return (
-                    <MdWrapper data={Item.data} />
+                    <MdWrapper front={Item.front} data={Item.data} />
                   );
                 }}
               />

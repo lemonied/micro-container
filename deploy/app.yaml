@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro-container
+  namespace: applications
+  labels:
+    app: micro-container
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: micro-container
+  template:
+    metadata:
+      labels:
+        app: micro-container
+    spec:
+      containers:
+        - name: micro-container
+          image: micro-container
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micro-container
+  namespace: applications
+spec:
+  selector:
+    app: micro-container
+  clusterIP: None
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 443
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: micro-container
+  namespace: applications
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite /app/(.*) /$1 break;
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /app
+            pathType: Prefix
+            backend:
+              service:
+                name: micro-container
+                port:
+                  number: 80
